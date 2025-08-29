@@ -1,60 +1,438 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>KrishiShakti Dashboard</title>
+    <title>KrishiShakti - Smart Farm Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body { background: #f0f9f0; padding: 20px; }
-        h1 { color: green; }
-        .card { margin-bottom: 20px; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e8f5e9 50%, #f1f8e9 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            font-family: 'Inter', sans-serif;
+            color: #2e7d32;
+            line-height: 1.6;
+        }
+        
+        /* Farmer-friendly Navbar */
+        .navbar {
+            background: linear-gradient(90deg, #388e3c 0%, #4caf50 100%);
+            box-shadow: 0 4px 20px rgba(56, 142, 60, 0.2);
+            padding: 1rem 0;
+        }
+        
+        .navbar-brand {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: #ffffff !important;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .navbar-brand i {
+            font-size: 1.8rem;
+            color: #81c784;
+        }
+        
+        /* Welcome Header */
+        .welcome-header {
+            background: linear-gradient(135deg, #66bb6a 0%, #4caf50 100%);
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+            border-radius: 0 0 30px 30px;
+            box-shadow: 0 8px 25px rgba(76, 175, 80, 0.3);
+        }
+        
+        .welcome-header h1 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .welcome-header p {
+            font-size: 1.1rem;
+            opacity: 0.95;
+            margin-bottom: 0;
+        }
+        
+        /* Farmer Info Card */
+        .farmer-info {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border: 2px solid #81c784;
+            border-radius: 20px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 25px rgba(129, 199, 132, 0.15);
+            text-align: center;
+        }
+        
+        .farmer-info .farmer-details {
+            font-size: 1.2rem;
+            color: #2e7d32;
+            font-weight: 500;
+        }
+        
+        .farmer-info .farmer-name {
+            color: #1b5e20;
+            font-weight: 700;
+        }
+        
+        .farmer-info .farmer-location {
+            color: #388e3c;
+            font-weight: 600;
+        }
+        
+        /* Soil Health Cards */
+        .soil-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border: none;
+            border-radius: 20px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .soil-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--card-color);
+        }
+        
+        .soil-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
+        
+        .soil-card .icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--card-color);
+        }
+        
+        .soil-card .card-title {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: #2e7d32;
+            margin-bottom: 0.5rem;
+        }
+        
+        .soil-card .card-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1b5e20;
+            margin-bottom: 0.5rem;
+        }
+        
+        .soil-card .card-unit {
+            font-size: 0.9rem;
+            color: #666;
+            font-weight: 500;
+        }
+        
+        .soil-card .health-status {
+            display: inline-block;
+            padding: 0.3rem 1rem;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+        
+        /* Individual card colors */
+        .nitrogen-card { --card-color: #4caf50; }
+        .phosphorus-card { --card-color: #ff9800; }
+        .potassium-card { --card-color: #2196f3; }
+        .ph-card { --card-color: #9c27b0; }
+        
+        /* Action Button */
+        .action-btn {
+            background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            color: white;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.3);
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(76, 175, 80, 0.4);
+            background: linear-gradient(135deg, #66bb6a 0%, #4caf50 100%);
+        }
+        
+        /* Weather and Recommendations */
+        .info-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border-radius: 20px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            border-left: 5px solid var(--info-color);
+        }
+        
+        .info-card h3 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            color: var(--info-color);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .weather-card { --info-color: #2196f3; }
+        .recommendation-card { --info-color: #ff9800; }
+        
+        .info-content {
+            background: rgba(var(--info-rgb), 0.05);
+            padding: 1rem;
+            border-radius: 10px;
+            border: 1px solid rgba(var(--info-rgb), 0.1);
+        }
+        
+        .weather-card .info-content { --info-rgb: 33, 150, 243; }
+        .recommendation-card .info-content { --info-rgb: 255, 152, 0; }
+        
+        /* Section Titles */
+        .section-title {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 1.8rem;
+            color: #2e7d32;
+            text-align: center;
+            margin: 3rem 0 2rem 0;
+            position: relative;
+        }
+        
+        .section-title i {
+            color: #4caf50;
+            margin-right: 0.5rem;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, #4caf50, #81c784);
+            border-radius: 2px;
+        }
+        
+        /* Data Table */
+        .data-table-container {
+            background: white;
+            border-radius: 20px;
+            padding: 1.5rem;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+            border: 1px solid #e8f5e9;
+        }
+        
+        .table {
+            margin: 0;
+            color: #2e7d32;
+        }
+        
+        .table th {
+            background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
+            color: white;
+            border: none;
+            font-weight: 600;
+            padding: 1rem;
+            font-size: 0.95rem;
+        }
+        
+        .table td {
+            border: none;
+            padding: 0.8rem 1rem;
+            border-bottom: 1px solid #e8f5e9;
+            font-weight: 500;
+        }
+        
+        .table tbody tr:hover {
+            background-color: #f1f8e9;
+        }
+        
+        /* Charts */
+        .chart-container {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+            border: 1px solid #e8f5e9;
+        }
+        
+        .chart-title {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            color: #2e7d32;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .chart-title i {
+            color: #4caf50;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .welcome-header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .soil-card .card-value {
+                font-size: 2rem;
+            }
+            
+            .section-title {
+                font-size: 1.5rem;
+            }
+        }
+        
+        /* Loading states */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(76, 175, 80, 0.3);
+            border-radius: 50%;
+            border-top-color: #4caf50;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Status indicators */
+        .status-good { background: #c8e6c9; color: #2e7d32; }
+        .status-medium { background: #fff3e0; color: #ef6c00; }
+        .status-low { background: #ffebee; color: #c62828; }
     </style>
 </head>
 <body>
-        <h1>🌱 KrishiShakti Dashboard</h1>
+    <!-- Farmer-friendly Navbar -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-seedling"></i>
+                KrishiShakti
+            </a>
+        </div>
+    </nav>
+
+    <!-- Welcome Header -->
+    <div class="welcome-header">
+        <div class="container text-center">
+            <h1><i class="fas fa-tractor"></i> Welcome to Your Farm Dashboard</h1>
+            <p>Monitor your soil health and get smart farming recommendations</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Farmer Info -->
         {% if farmer_name and farmer_location %}
-        <div class="mb-3 fs-5 text-dark">
-            👨‍🌾 <b>{{ farmer_name }}</b> &mdash; <span class="text-success">{{ farmer_location }}</span>
+        <div class="farmer-info">
+            <div class="farmer-details">
+                <i class="fas fa-user-tie"></i> 
+                <span class="farmer-name">{{ farmer_name }}</span>
+                <span class="mx-3">•</span>
+                <i class="fas fa-map-marker-alt"></i> 
+                <span class="farmer-location">{{ farmer_location }}</span>
+            </div>
         </div>
         {% endif %}
 
-        <!-- Cards for latest N, P, K, pH -->
+        <!-- Soil Health Cards -->
         {% if readings %}
         <div class="row mb-4">
-            <div class="col-md-3">
-                <div class="card text-center">
-                    <div class="card-body">
-                        <h5 class="card-title">Nitrogen</h5>
-                        <p class="card-text fs-4">{{ readings.0.nitrogen|floatformat:2 }}</p>
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="soil-card nitrogen-card">
+                    <div class="icon">
+                        <i class="fas fa-leaf"></i>
                     </div>
+                    <h5 class="card-title">Nitrogen (N)</h5>
+                    <div class="card-value">{{ readings.0.nitrogen|floatformat:1 }}</div>
+                    <div class="card-unit">mg/kg</div>
+                    <div class="health-status status-good">Good Level</div>
                 </div>
             </div>
-            <div class="col-md-3">
-                <div class="card text-center">
-                    <div class="card-body">
-                        <h5 class="card-title">Phosphorus</h5>
-                        <p class="card-text fs-4">{{ readings.0.phosphorus|floatformat:2 }}</p>
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="soil-card phosphorus-card">
+                    <div class="icon">
+                        <i class="fas fa-wheat-awn"></i>
                     </div>
+                    <h5 class="card-title">Phosphorus (P)</h5>
+                    <div class="card-value">{{ readings.0.phosphorus|floatformat:1 }}</div>
+                    <div class="card-unit">mg/kg</div>
+                    <div class="health-status status-medium">Medium Level</div>
                 </div>
             </div>
-            <div class="col-md-3">
-                <div class="card text-center">
-                    <div class="card-body">
-                        <h5 class="card-title">Potassium</h5>
-                        <p class="card-text fs-4">{{ readings.0.potassium|floatformat:2 }}</p>
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="soil-card potassium-card">
+                    <div class="icon">
+                        <i class="fas fa-apple-alt"></i>
                     </div>
+                    <h5 class="card-title">Potassium (K)</h5>
+                    <div class="card-value">{{ readings.0.potassium|floatformat:1 }}</div>
+                    <div class="card-unit">mg/kg</div>
+                    <div class="health-status status-good">Good Level</div>
                 </div>
             </div>
-            <div class="col-md-3">
-                <div class="card text-center">
-                    <div class="card-body">
-                        <h5 class="card-title">pH</h5>
-                        <p class="card-text fs-4">{{ readings.0.ph|floatformat:2 }}</p>
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="soil-card ph-card">
+                    <div class="icon">
+                        <i class="fas fa-vial"></i>
                     </div>
+                    <h5 class="card-title">Soil pH</h5>
+                    <div class="card-value">{{ readings.0.ph|floatformat:1 }}</div>
+                    <div class="card-unit">pH level</div>
+                    <div class="health-status status-good">Balanced</div>
                 </div>
             </div>
         </div>
         {% endif %}
-        <button id="generate-reading-btn" style="background:#388e3c; color:white; border:none; padding:10px 20px; border-radius:6px; margin-bottom:20px; cursor:pointer;">Generate New Sensor Reading</button>
+
+        <!-- Action Button -->
+        <div class="text-center mb-5">
+            <button id="generate-reading-btn" class="action-btn">
+                <i class="fas fa-sync-alt"></i>
+                Take New Soil Reading
+            </button>
+        </div>
         <script>
         document.getElementById('generate-reading-btn').onclick = function() {
             fetch('/generate-reading/', {
@@ -72,19 +450,27 @@
             });
         };
         </script>
-        {% if farmer_name and farmer_location %}
-        <div style="margin-bottom:15px; font-size:18px; color:#333;">
-            👨‍🌾 <b>{{ farmer_name }}</b> &mdash; <span style="color:#388e3c;">{{ farmer_location }}</span>
+        <!-- Weather and Farm Recommendations -->
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div id="weather-card" class="info-card weather-card" style="display:none;">
+                    <h3>
+                        <i class="fas fa-cloud-sun"></i>
+                        Today's Weather
+                    </h3>
+                    <div id="weather-content" class="info-content"></div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div id="recommendation-card" class="info-card recommendation-card" style="display:none;">
+                    <h3>
+                        <i class="fas fa-lightbulb"></i>
+                        Farming Tips
+                    </h3>
+                    <div id="recommendation-content" class="info-content"></div>
+                </div>
+            </div>
         </div>
-        {% endif %}
-            <div id="weather-card" style="display:none; margin-bottom:20px;">
-                    <h2 style="color:#1565c0;">☁️ Latest Weather Info</h2>
-                    <div id="weather-content" style="font-size:16px; background:#e3f2fd; padding:10px; border-radius:8px;"></div>
-            </div>
-            <div id="recommendation-card" style="display:none; margin-bottom:20px;">
-                    <h2 style="color:#2e7d32;">🌾 Fertilizer Recommendation</h2>
-                    <div id="recommendation-content" style="font-size:18px; background:#e8f5e9; padding:10px; border-radius:8px;"></div>
-            </div>
             <script>
             fetch('/api/weather/')
                 .then(response => response.json())
@@ -106,76 +492,214 @@
                     }
                 });
             </script>
-    <table>
-        <tr>
-            <th>Timestamp</th>
-            <th>Nitrogen</th>
-            <th>Phosphorus</th>
-            <th>Potassium</th>
-            <th>pH</th>
-        </tr>
-        {% for r in readings %}
-        <tr>
-            <td>{{ r.timestamp }}</td>
-            <td>{{ r.nitrogen|floatformat:2 }}</td>
-            <td>{{ r.phosphorus|floatformat:2 }}</td>
-            <td>{{ r.potassium|floatformat:2 }}</td>
-            <td>{{ r.ph|floatformat:2 }}</td>
-        </tr>
-        {% endfor %}
-    </table>
+        <!-- Historical Data Section -->
+        <h2 class="section-title">
+            <i class="fas fa-history"></i>
+            Your Soil Test History
+        </h2>
+        <div class="data-table-container">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th><i class="fas fa-calendar"></i> Date & Time</th>
+                        <th><i class="fas fa-leaf"></i> Nitrogen (N)</th>
+                        <th><i class="fas fa-wheat-awn"></i> Phosphorus (P)</th>
+                        <th><i class="fas fa-apple-alt"></i> Potassium (K)</th>
+                        <th><i class="fas fa-vial"></i> Soil pH</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for r in readings %}
+                    <tr>
+                        <td>{{ r.timestamp|date:"M d, Y - g:i A" }}</td>
+                        <td><strong>{{ r.nitrogen|floatformat:1 }}</strong> mg/kg</td>
+                        <td><strong>{{ r.phosphorus|floatformat:1 }}</strong> mg/kg</td>
+                        <td><strong>{{ r.potassium|floatformat:1 }}</strong> mg/kg</td>
+                        <td><strong>{{ r.ph|floatformat:1 }}</strong> pH</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
 
-    <!-- Chart.js CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <div style="max-width:800px; margin:30px auto;">
-        <canvas id="npkChart"></canvas>
-    </div>
-    <div style="max-width:800px; margin:30px auto;">
-        <canvas id="phChart"></canvas>
+        <!-- Chart.js CDN -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        
+        <!-- Soil Trends Charts -->
+        <h2 class="section-title">
+            <i class="fas fa-chart-line"></i>
+            Soil Health Trends
+        </h2>
+        <div class="row">
+            <div class="col-lg-6 mb-4">
+                <div class="chart-container">
+                    <h4 class="chart-title">
+                        <i class="fas fa-seedling"></i>
+                        Nutrient Levels Over Time
+                    </h4>
+                    <canvas id="npkChart"></canvas>
+                </div>
+            </div>
+            <div class="col-lg-6 mb-4">
+                <div class="chart-container">
+                    <h4 class="chart-title">
+                        <i class="fas fa-balance-scale"></i>
+                        Soil pH Balance
+                    </h4>
+                    <canvas id="phChart"></canvas>
+                </div>
+            </div>
+        </div>
     </div>
     <script>
-    // Prepare data for charts
-    const timestamps = [{% for r in readings %}'{{ r.timestamp|date:"Y-m-d H:i" }}',{% endfor %}];
-    const nitrogen = [{% for r in readings %}{{ r.nitrogen|floatformat:2 }},{% endfor %}];
-    const phosphorus = [{% for r in readings %}{{ r.phosphorus|floatformat:2 }},{% endfor %}];
-    const potassium = [{% for r in readings %}{{ r.potassium|floatformat:2 }},{% endfor %}];
-    const ph = [{% for r in readings %}{{ r.ph|floatformat:2 }},{% endfor %}];
+    // Simple farmer-friendly chart styling
+    Chart.defaults.color = '#2e7d32';
+    Chart.defaults.font.family = 'Inter';
+    
+    // Prepare chart data for farmers
+    const timestamps = [{% for r in readings %}'{{ r.timestamp|date:"M d" }}'{% if not forloop.last %},{% endif %}{% endfor %}];
+    const nitrogen = [{% for r in readings %}{{ r.nitrogen|floatformat:1 }}{% if not forloop.last %},{% endif %}{% endfor %}];
+    const phosphorus = [{% for r in readings %}{{ r.phosphorus|floatformat:1 }}{% if not forloop.last %},{% endif %}{% endfor %}];
+    const potassium = [{% for r in readings %}{{ r.potassium|floatformat:1 }}{% if not forloop.last %},{% endif %}{% endfor %}];
+    const ph = [{% for r in readings %}{{ r.ph|floatformat:1 }}{% if not forloop.last %},{% endif %}{% endfor %}];
 
-    // NPK Chart
+    // Nutrient levels chart - easy to understand
     new Chart(document.getElementById('npkChart'), {
         type: 'line',
         data: {
             labels: timestamps,
             datasets: [
-                { label: 'Nitrogen', data: nitrogen, borderColor: '#388e3c', fill: false },
-                { label: 'Phosphorus', data: phosphorus, borderColor: '#1976d2', fill: false },
-                { label: 'Potassium', data: potassium, borderColor: '#fbc02d', fill: false }
+                { 
+                    label: 'Nitrogen (N)', 
+                    data: nitrogen, 
+                    borderColor: '#4caf50', 
+                    backgroundColor: 'rgba(76, 175, 80, 0.1)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.3,
+                    pointBackgroundColor: '#4caf50',
+                    pointBorderColor: '#ffffff',
+                    pointBorderWidth: 2,
+                    pointRadius: 5
+                },
+                { 
+                    label: 'Phosphorus (P)', 
+                    data: phosphorus, 
+                    borderColor: '#ff9800', 
+                    backgroundColor: 'rgba(255, 152, 0, 0.1)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.3,
+                    pointBackgroundColor: '#ff9800',
+                    pointBorderColor: '#ffffff',
+                    pointBorderWidth: 2,
+                    pointRadius: 5
+                },
+                { 
+                    label: 'Potassium (K)', 
+                    data: potassium, 
+                    borderColor: '#2196f3', 
+                    backgroundColor: 'rgba(33, 150, 243, 0.1)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.3,
+                    pointBackgroundColor: '#2196f3',
+                    pointBorderColor: '#ffffff',
+                    pointBorderWidth: 2,
+                    pointRadius: 5
+                }
             ]
         },
         options: {
             responsive: true,
-            plugins: { legend: { position: 'top' } },
-            scales: { x: { title: { display: true, text: 'Timestamp' } }, y: { title: { display: true, text: 'Value' } } }
+            plugins: { 
+                legend: { 
+                    position: 'top',
+                    labels: {
+                        color: '#2e7d32',
+                        font: { weight: '600', size: 12 },
+                        usePointStyle: true,
+                        padding: 20
+                    }
+                }
+            },
+            scales: { 
+                x: { 
+                    title: { display: true, text: 'Date', color: '#2e7d32', font: { weight: '600' } },
+                    ticks: { color: '#2e7d32', font: { weight: '500' } },
+                    grid: { color: 'rgba(46, 125, 50, 0.1)' }
+                }, 
+                y: { 
+                    title: { display: true, text: 'Level (mg/kg)', color: '#2e7d32', font: { weight: '600' } },
+                    ticks: { color: '#2e7d32', font: { weight: '500' } },
+                    grid: { color: 'rgba(46, 125, 50, 0.1)' }
+                }
+            }
         }
     });
 
-    // pH Chart
+    // Soil pH chart - shows if soil is acidic or alkaline
     new Chart(document.getElementById('phChart'), {
         type: 'line',
         data: {
             labels: timestamps,
             datasets: [
-                { label: 'pH', data: ph, borderColor: '#8e24aa', fill: false }
+                { 
+                    label: 'Soil pH Level', 
+                    data: ph, 
+                    borderColor: '#9c27b0', 
+                    backgroundColor: 'rgba(156, 39, 176, 0.1)',
+                    borderWidth: 4,
+                    fill: true,
+                    tension: 0.3,
+                    pointBackgroundColor: '#9c27b0',
+                    pointBorderColor: '#ffffff',
+                    pointBorderWidth: 2,
+                    pointRadius: 6
+                }
             ]
         },
         options: {
             responsive: true,
-            plugins: { legend: { position: 'top' } },
-            scales: { x: { title: { display: true, text: 'Timestamp' } }, y: { title: { display: true, text: 'pH Level' }, min: 4, max: 9 } }
+            plugins: { 
+                legend: { 
+                    position: 'top',
+                    labels: {
+                        color: '#2e7d32',
+                        font: { weight: '600', size: 12 },
+                        usePointStyle: true,
+                        padding: 20
+                    }
+                }
+            },
+            scales: { 
+                x: { 
+                    title: { display: true, text: 'Date', color: '#2e7d32', font: { weight: '600' } },
+                    ticks: { color: '#2e7d32', font: { weight: '500' } },
+                    grid: { color: 'rgba(156, 39, 176, 0.1)' }
+                }, 
+                y: { 
+                    title: { display: true, text: 'pH Value (Acidic ← 7 → Alkaline)', color: '#2e7d32', font: { weight: '600' } }, 
+                    min: 4, 
+                    max: 9,
+                    ticks: { 
+                        color: '#2e7d32', 
+                        font: { weight: '500' },
+                        callback: function(value) {
+                            if (value < 6.5) return value + ' (Acidic)';
+                            if (value > 7.5) return value + ' (Alkaline)';
+                            return value + ' (Neutral)';
+                        }
+                    },
+                    grid: { color: 'rgba(156, 39, 176, 0.1)' }
+                }
+            }
         }
     });
     </script>
 
+</body>
+</html>
 
 
 </body>
