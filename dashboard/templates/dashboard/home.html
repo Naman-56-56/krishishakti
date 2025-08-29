@@ -1,706 +1,1696 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>KrishiShakti - Smart Farm Dashboard</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<!doctype html>
+<html lang="en" class="antialiased">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Agriculture Dashboard</title>
+    <meta name="description" content="Advanced, farmer-friendly agriculture dashboard. Responsive, accessible, and fast." />
+
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+      /* =========================================
+         Enhanced Design Tokens
+         ========================================= */
+      :root {
+        --color-primary: #059669;
+        --color-primary-light: #10b981;
+        --color-primary-dark: #047857;
+        --color-accent: #3b82f6;
+        --color-accent-light: #60a5fa;
+        --color-success: #10b981;
+        --color-warning: #f59e0b;
+        --color-error: #ef4444;
+        --color-white: #ffffff;
+        --color-ink: #0f172a;
+        --color-slate-50: #f8fafc;
+        --color-slate-100: #f1f5f9;
+        --color-slate-200: #e2e8f0;
+        --color-slate-300: #cbd5e1;
+        --color-slate-400: #94a3b8;
+        --color-slate-500: #64748b;
+        --color-slate-600: #475569;
+        --color-slate-700: #334155;
+        --color-slate-800: #1e293b;
+        --color-slate-900: #0f172a;
+
+        --radius-xs: 6px;
+        --radius-sm: 10px;
+        --radius-md: 14px;
+        --radius-lg: 18px;
+        --radius-xl: 24px;
+
+        --shadow-xs: 0 1px 2px rgba(15, 23, 42, 0.04);
+        --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.06);
+        --shadow-md: 0 4px 6px rgba(15, 23, 42, 0.07), 0 1px 3px rgba(15, 23, 42, 0.06);
+        --shadow-lg: 0 10px 15px rgba(15, 23, 42, 0.08), 0 4px 6px rgba(15, 23, 42, 0.05);
+        --shadow-xl: 0 20px 25px rgba(15, 23, 42, 0.1), 0 10px 10px rgba(15, 23, 42, 0.04);
+        --shadow-glow: 0 0 0 1px rgba(16, 185, 129, 0.05), 0 1px 3px rgba(16, 185, 129, 0.1);
+
+        --surface: rgba(255, 255, 255, 0.85);
+        --surface-strong: rgba(255, 255, 255, 0.95);
+        --surface-glass: rgba(255, 255, 255, 0.1);
+        --ink-90: rgba(15, 23, 42, 0.95);
+        --ink-80: rgba(15, 23, 42, 0.8);
+        --ink-70: rgba(15, 23, 42, 0.7);
+        --ink-60: rgba(15, 23, 42, 0.6);
+        --ink-50: rgba(15, 23, 42, 0.5);
+        --ink-40: rgba(15, 23, 42, 0.4);
+        --ink-30: rgba(15, 23, 42, 0.3);
+        --ink-20: rgba(15, 23, 42, 0.2);
+        --ink-10: rgba(15, 23, 42, 0.1);
+        --ink-5: rgba(15, 23, 42, 0.05);
+
+        --gradient-primary: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+        --gradient-accent: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-light) 100%);
+        --gradient-surface: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.8) 100%);
+      }
+
+      .theme-dark {
+        --surface: rgba(15, 23, 42, 0.7);
+        --surface-strong: rgba(15, 23, 42, 0.9);
+        --surface-glass: rgba(255, 255, 255, 0.05);
+        --color-ink: #ffffff;
+        --ink-90: rgba(255, 255, 255, 0.95);
+        --ink-80: rgba(255, 255, 255, 0.8);
+        --ink-70: rgba(255, 255, 255, 0.75);
+        --ink-60: rgba(255, 255, 255, 0.6);
+        --ink-50: rgba(255, 255, 255, 0.55);
+        --ink-40: rgba(255, 255, 255, 0.4);
+        --ink-30: rgba(255, 255, 255, 0.3);
+        --ink-20: rgba(255, 255, 255, 0.2);
+        --ink-10: rgba(255, 255, 255, 0.15);
+        --ink-5: rgba(255, 255, 255, 0.08);
+        --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.2);
+        --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+        --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.3), 0 1px 3px rgba(0, 0, 0, 0.2);
+        --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.4), 0 4px 6px rgba(0, 0, 0, 0.3);
+        --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.5), 0 10px 10px rgba(0, 0, 0, 0.2);
+        --gradient-surface: linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(15, 23, 42, 0.7) 100%);
+      }
+
+      /* Enhanced Base Styles */
+      *, *::before, *::after { box-sizing: border-box; }
+      html, body { height: 100%; }
+      body {
+        margin: 0;
+        font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+        color: var(--color-ink);
+        background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #f0fdf4 100%);
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        overflow-x: hidden;
+      }
+
+      .theme-dark body {
+        background: linear-gradient(135deg, #0c1426 0%, #0f172a 50%, #111827 100%);
+      }
+
+      /* Floating geometric shapes */
+      .bg-shapes {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        pointer-events: none;
+        overflow: hidden;
+      }
+
+      .shape {
+        position: absolute;
+        opacity: 0.05;
+        animation: float 20s infinite linear;
+      }
+
+      .shape-1 {
+        top: 10%;
+        left: 10%;
+        width: 100px;
+        height: 100px;
+        background: var(--gradient-primary);
+        border-radius: 50%;
+        animation-delay: 0s;
+      }
+
+      .shape-2 {
+        top: 60%;
+        right: 15%;
+        width: 80px;
+        height: 80px;
+        background: var(--gradient-accent);
+        transform: rotate(45deg);
+        animation-delay: -10s;
+      }
+
+      .shape-3 {
+        bottom: 20%;
+        left: 20%;
+        width: 60px;
+        height: 60px;
+        background: var(--color-success);
+        border-radius: 30%;
+        animation-delay: -5s;
+      }
+
+      @keyframes float {
+        0% { transform: translateY(0px) rotate(0deg); }
+        33% { transform: translateY(-20px) rotate(120deg); }
+        66% { transform: translateY(20px) rotate(240deg); }
+        100% { transform: translateY(0px) rotate(360deg); }
+      }
+
+      /* Enhanced Focus Styles */
+      :is(button, a, input, select, textarea):focus-visible {
+        outline: 3px solid var(--color-accent);
+        outline-offset: 2px;
+        border-radius: var(--radius-sm);
+        box-shadow: 0 0 0 1px var(--color-accent-light);
+      }
+
+      /* Layout */
+      .container {
+        width: 100%;
+        max-width: 1200px;
+        padding-inline: 20px;
+        margin-inline: auto;
+      }
+
+      /* Enhanced Header */
+      header.navbar {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        backdrop-filter: saturate(180%) blur(20px);
+        background: var(--surface);
+        border-bottom: 1px solid var(--ink-10);
+        box-shadow: var(--shadow-sm);
+      }
+
+      .nav-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        min-height: 72px;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 700;
+        font-size: 1.1rem;
+        letter-spacing: -0.025em;
+      }
+
+      .brand-mark {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        background: var(--gradient-primary);
+        color: var(--color-white);
+        box-shadow: var(--shadow-md);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .brand-mark::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+        animation: shimmer 3s infinite;
+      }
+
+      @keyframes shimmer {
+        0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+        100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+      }
+
+      .nav-actions {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      /* Enhanced Buttons */
+      .btn {
+        --btn-bg: var(--gradient-primary);
+        --btn-fg: var(--color-white);
+        --btn-border: transparent;
+        --btn-shadow: var(--shadow-sm);
+
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 12px 20px;
+        border-radius: var(--radius-lg);
+        font-weight: 600;
+        font-size: 0.95rem;
+        border: 1px solid var(--btn-border);
+        color: var(--btn-fg);
+        background: var(--btn-bg);
+        box-shadow: var(--btn-shadow);
+        cursor: pointer;
+        transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+        text-decoration: none;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 500ms;
+      }
+
+      .btn:hover::before {
+        left: 100%;
+      }
+
+      .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-lg);
+      }
+
+      .btn:active {
+        transform: translateY(0);
+        box-shadow: var(--btn-shadow);
+      }
+
+      .btn-secondary {
+        --btn-bg: var(--surface-strong);
+        --btn-fg: var(--ink-80);
+        --btn-border: var(--ink-10);
+        --btn-shadow: var(--shadow-xs);
+      }
+
+      .btn-accent {
+        --btn-bg: var(--gradient-accent);
+        --btn-fg: var(--color-white);
+      }
+
+      .btn-ghost {
+        --btn-bg: transparent;
+        --btn-fg: var(--ink-70);
+        --btn-border: var(--ink-20);
+        --btn-shadow: none;
+      }
+
+      .btn-ghost:hover {
+        --btn-bg: var(--surface-glass);
+        --btn-border: var(--ink-30);
+      }
+
+      /* Enhanced Hero Section */
+      .hero {
+        padding: 32px 0;
+      }
+
+      .hero-card {
+        display: grid;
+        gap: 24px;
+        grid-template-columns: 1fr;
+        padding: 24px;
+        border-radius: var(--radius-xl);
+        background: var(--gradient-surface);
+        border: 1px solid var(--ink-5);
+        backdrop-filter: blur(20px);
+        box-shadow: var(--shadow-lg);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, var(--color-primary-light), transparent);
+      }
+
+      .hero-row {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+        flex-wrap: wrap;
+        justify-content: space-between;
+      }
+
+      .farmer {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+
+      .farmer-avatar {
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        font-weight: 700;
+        font-size: 1.25rem;
+        color: var(--color-white);
+        background: var(--gradient-primary);
+        box-shadow: var(--shadow-md);
+        border: 3px solid rgba(255, 255, 255, 0.2);
+      }
+
+      .farmer-info h1 {
+        margin: 0;
+        font-size: 1.5rem;
+        line-height: 1.2;
+        background: linear-gradient(135deg, var(--ink-90), var(--ink-70));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .farmer-info p {
+        margin: 4px 0 0 0;
+        color: var(--ink-60);
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .hero-actions {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .status-indicator {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 12px;
+        background: var(--surface-glass);
+        border-radius: var(--radius-md);
+        font-size: 0.85rem;
+        color: var(--ink-70);
+        backdrop-filter: blur(10px);
+      }
+
+      .status-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--color-success);
+        animation: pulse 2s infinite;
+      }
+
+      @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.5; }
+      }
+
+      /* Enhanced Grid */
+      .grid {
+        display: grid;
+        gap: 20px;
+      }
+
+      .grid-2 { grid-template-columns: 1fr; }
+      .grid-3 { grid-template-columns: 1fr; }
+      .grid-4 { grid-template-columns: 1fr; }
+
+      @media (min-width: 640px) {
+        .grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      }
+
+      @media (min-width: 1024px) {
+        .grid-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+      }
+
+      /* Enhanced Cards */
+      .card {
+        background: var(--gradient-surface);
+        border: 1px solid var(--ink-5);
+        border-radius: var(--radius-lg);
+        padding: 20px;
+        box-shadow: var(--shadow-md);
+        backdrop-filter: blur(20px);
+        transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+        opacity: 0;
+        transition: opacity 300ms;
+      }
+
+      .card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-xl);
+        border-color: var(--ink-10);
+      }
+
+      .card:hover::before {
+        opacity: 1;
+      }
+
+      .card h3 {
+        margin: 0 0 16px 0;
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--ink-80);
+      }
+
+      .card .muted {
+        color: var(--ink-60);
+        font-size: 0.9rem;
+      }
+
+      /* Enhanced Stats */
+      .stat {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+
+      .stat .icon {
+        width: 48px;
+        height: 48px;
+        border-radius: var(--radius-md);
+        display: grid;
+        place-items: center;
+        background: var(--surface-strong);
+        border: 1px solid var(--ink-10);
+        box-shadow: var(--shadow-xs);
+        transition: all 200ms;
+      }
+
+      .card:hover .stat .icon {
+        transform: scale(1.05);
+        box-shadow: var(--shadow-sm);
+      }
+
+      .stat .value {
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: var(--ink-90);
+        line-height: 1;
+      }
+
+      .stat .label {
+        font-size: 0.9rem;
+        color: var(--ink-60);
+        margin-top: 4px;
+      }
+
+      /* Enhanced Chips */
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 12px;
+        border-radius: var(--radius-lg);
+        font-weight: 600;
+        font-size: 0.8rem;
+        border: 1px solid;
+        backdrop-filter: blur(10px);
+        transition: all 200ms;
+      }
+
+      .chip-ok {
+        color: var(--color-success);
+        background: rgba(16, 185, 129, 0.1);
+        border-color: rgba(16, 185, 129, 0.2);
+      }
+
+      .chip-warn {
+        color: var(--color-warning);
+        background: rgba(245, 158, 11, 0.1);
+        border-color: rgba(245, 158, 11, 0.2);
+      }
+
+      .chip-error {
+        color: var(--color-error);
+        background: rgba(239, 68, 68, 0.1);
+        border-color: rgba(239, 68, 68, 0.2);
+      }
+
+      /* Enhanced Collapsibles */
+      .collapsible {
+        display: grid;
+        gap: 16px;
+        transition: all 300ms;
+      }
+
+      .collapsible .head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        cursor: pointer;
+        user-select: none;
+        padding: 4px 0;
+        border-radius: var(--radius-sm);
+        transition: all 200ms;
+      }
+
+      .collapsible .head:hover {
+        color: var(--color-primary);
+      }
+
+      .collapsible .content {
+        grid-template-rows: 0fr;
+        display: grid;
+        transition: grid-template-rows 400ms cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .collapsible .content > div {
+        overflow: hidden;
+      }
+
+      .collapsible[aria-expanded="true"] .content {
+        grid-template-rows: 1fr;
+      }
+
+      /* Enhanced Charts */
+      .chart {
+        height: 280px;
+        width: 100%;
+        background: var(--gradient-surface);
+        border: 1px solid var(--ink-5);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-md);
+        display: grid;
+        grid-template-rows: auto 1fr;
+        backdrop-filter: blur(20px);
+        transition: all 300ms;
+        overflow: hidden;
+      }
+
+      .chart:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-lg);
+      }
+
+      .chart h4 {
+        margin: 0;
+        padding: 16px 20px;
+        font-size: 1rem;
+        font-weight: 600;
+        border-bottom: 1px solid var(--ink-10);
+        background: var(--surface-glass);
+        color: var(--ink-80);
+      }
+
+      .chart canvas {
+        width: 100%;
+        height: 100%;
+        display: block;
+        padding: 12px;
+      }
+
+      /* Enhanced Table */
+      .table-wrap {
+        overflow-x: auto;
+        border-radius: var(--radius-lg);
+        border: 1px solid var(--ink-5);
+        background: var(--gradient-surface);
+        backdrop-filter: blur(20px);
+        box-shadow: var(--shadow-md);
+      }
+
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        min-width: 640px;
+      }
+
+      thead th {
+        text-align: left;
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: var(--ink-70);
+        border-bottom: 1px solid var(--ink-10);
+        padding: 16px 18px;
+        white-space: nowrap;
+        background: var(--surface-glass);
+      }
+
+      tbody td {
+        padding: 16px 18px;
+        border-bottom: 1px solid var(--ink-5);
+        font-size: 0.95rem;
+      }
+
+      tbody tr {
+        transition: all 200ms;
+      }
+
+      tbody tr:hover {
+        background: rgba(16, 185, 129, 0.05);
+        transform: scale(1.01);
+      }
+
+      tbody tr:last-child td {
+        border-bottom: none;
+      }
+
+      /* Progress Bars */
+      .progress-bar {
+        width: 100%;
+        height: 8px;
+        background: var(--ink-10);
+        border-radius: var(--radius-sm);
+        overflow: hidden;
+        margin-top: 8px;
+      }
+
+      .progress-fill {
+        height: 100%;
+        background: var(--gradient-primary);
+        border-radius: var(--radius-sm);
+        transition: width 1s ease-out;
+      }
+
+      /* Metric Cards Enhancement */
+      .metric-card {
+        position: relative;
+        overflow: hidden;
+      }
+
+      .metric-card .metric-trend {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        font-size: 0.8rem;
+        color: var(--color-success);
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+
+      .metric-trend.down {
+        color: var(--color-error);
+      }
+
+      /* Footer */
+      footer {
+        color: var(--ink-60);
+        padding: 40px 0;
+        text-align: center;
+        border-top: 1px solid var(--ink-10);
+        margin-top: 40px;
+      }
+
+      /* Utility Classes */
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0,0,0,0);
+        white-space: nowrap;
+        border: 0;
+      }
+
+      .spacer { height: 24px; }
+      .section-title {
+        margin: 16px 0 20px 0;
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: var(--ink-80);
+      }
+
+      /* Loading States */
+      .loading {
+        opacity: 0.7;
+        pointer-events: none;
+        position: relative;
+      }
+
+      .loading::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 20px;
+        height: 20px;
+        margin: -10px 0 0 -10px;
+        border: 2px solid var(--ink-20);
+        border-top-color: var(--color-primary);
+        border-radius: 50%;
+        animation: spin 1s infinite linear;
+      }
+
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+
+      /* Responsive Enhancements */
+      @media (max-width: 640px) {
+        .container { padding-inline: 16px; }
+        .hero-card { padding: 20px; }
+        .card { padding: 16px; }
+        .farmer-info h1 { font-size: 1.25rem; }
+        .stat .value { font-size: 1.5rem; }
+      }
+
+      /* Dark mode specific enhancements */
+      .theme-dark .hero-card::before {
+        background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.3), transparent);
+      }
+
+      .theme-dark .card::before {
+        background: linear-gradient(90deg, rgba(16, 185, 129, 0.3), rgba(59, 130, 246, 0.3));
+      }
+
+      /* Animations for initial load */
+      @keyframes slideUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
         }
-        
-        body {
-            background: linear-gradient(135deg, #f8f9fa 0%, #e8f5e9 50%, #f1f8e9 100%);
-            background-attachment: fixed;
-            min-height: 100vh;
-            font-family: 'Inter', sans-serif;
-            color: #2e7d32;
-            line-height: 1.6;
+        to {
+          opacity: 1;
+          transform: translateY(0);
         }
-        
-        /* Farmer-friendly Navbar */
-        .navbar {
-            background: linear-gradient(90deg, #388e3c 0%, #4caf50 100%);
-            box-shadow: 0 4px 20px rgba(56, 142, 60, 0.2);
-            padding: 1rem 0;
-        }
-        
-        .navbar-brand {
-            font-family: 'Poppins', sans-serif;
-            font-weight: 700;
-            font-size: 1.5rem;
-            color: #ffffff !important;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .navbar-brand i {
-            font-size: 1.8rem;
-            color: #81c784;
-        }
-        
-        /* Welcome Header */
-        .welcome-header {
-            background: linear-gradient(135deg, #66bb6a 0%, #4caf50 100%);
-            color: white;
-            padding: 2rem 0;
-            margin-bottom: 2rem;
-            border-radius: 0 0 30px 30px;
-            box-shadow: 0 8px 25px rgba(76, 175, 80, 0.3);
-        }
-        
-        .welcome-header h1 {
-            font-family: 'Poppins', sans-serif;
-            font-weight: 600;
-            font-size: 2.2rem;
-            margin-bottom: 0.5rem;
-        }
-        
-        .welcome-header p {
-            font-size: 1.1rem;
-            opacity: 0.95;
-            margin-bottom: 0;
-        }
-        
-        /* Farmer Info Card */
-        .farmer-info {
-            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-            border: 2px solid #81c784;
-            border-radius: 20px;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 8px 25px rgba(129, 199, 132, 0.15);
-            text-align: center;
-        }
-        
-        .farmer-info .farmer-details {
-            font-size: 1.2rem;
-            color: #2e7d32;
-            font-weight: 500;
-        }
-        
-        .farmer-info .farmer-name {
-            color: #1b5e20;
-            font-weight: 700;
-        }
-        
-        .farmer-info .farmer-location {
-            color: #388e3c;
-            font-weight: 600;
-        }
-        
-        /* Soil Health Cards */
-        .soil-card {
-            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-            border: none;
-            border-radius: 20px;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .soil-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: var(--card-color);
-        }
-        
-        .soil-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
-        }
-        
-        .soil-card .icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            color: var(--card-color);
-        }
-        
-        .soil-card .card-title {
-            font-family: 'Poppins', sans-serif;
-            font-weight: 600;
-            font-size: 1.1rem;
-            color: #2e7d32;
-            margin-bottom: 0.5rem;
-        }
-        
-        .soil-card .card-value {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: #1b5e20;
-            margin-bottom: 0.5rem;
-        }
-        
-        .soil-card .card-unit {
-            font-size: 0.9rem;
-            color: #666;
-            font-weight: 500;
-        }
-        
-        .soil-card .health-status {
-            display: inline-block;
-            padding: 0.3rem 1rem;
-            border-radius: 15px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            margin-top: 0.5rem;
-        }
-        
-        /* Individual card colors */
-        .nitrogen-card { --card-color: #4caf50; }
-        .phosphorus-card { --card-color: #ff9800; }
-        .potassium-card { --card-color: #2196f3; }
-        .ph-card { --card-color: #9c27b0; }
-        
-        /* Action Button */
-        .action-btn {
-            background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
-            border: none;
-            padding: 1rem 2rem;
-            border-radius: 50px;
-            color: white;
-            font-weight: 600;
-            font-size: 1.1rem;
-            cursor: pointer;
-            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.3);
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .action-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(76, 175, 80, 0.4);
-            background: linear-gradient(135deg, #66bb6a 0%, #4caf50 100%);
-        }
-        
-        /* Weather and Recommendations */
-        .info-card {
-            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-            border-radius: 20px;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-            border-left: 5px solid var(--info-color);
-        }
-        
-        .info-card h3 {
-            font-family: 'Poppins', sans-serif;
-            font-weight: 600;
-            color: var(--info-color);
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .weather-card { --info-color: #2196f3; }
-        .recommendation-card { --info-color: #ff9800; }
-        
-        .info-content {
-            background: rgba(var(--info-rgb), 0.05);
-            padding: 1rem;
-            border-radius: 10px;
-            border: 1px solid rgba(var(--info-rgb), 0.1);
-        }
-        
-        .weather-card .info-content { --info-rgb: 33, 150, 243; }
-        .recommendation-card .info-content { --info-rgb: 255, 152, 0; }
-        
-        /* Section Titles */
-        .section-title {
-            font-family: 'Poppins', sans-serif;
-            font-weight: 600;
-            font-size: 1.8rem;
-            color: #2e7d32;
-            text-align: center;
-            margin: 3rem 0 2rem 0;
-            position: relative;
-        }
-        
-        .section-title i {
-            color: #4caf50;
-            margin-right: 0.5rem;
-        }
-        
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 3px;
-            background: linear-gradient(90deg, #4caf50, #81c784);
-            border-radius: 2px;
-        }
-        
-        /* Data Table */
-        .data-table-container {
-            background: white;
-            border-radius: 20px;
-            padding: 1.5rem;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-            margin-bottom: 2rem;
-            border: 1px solid #e8f5e9;
-        }
-        
-        .table {
-            margin: 0;
-            color: #2e7d32;
-        }
-        
-        .table th {
-            background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
-            color: white;
-            border: none;
-            font-weight: 600;
-            padding: 1rem;
-            font-size: 0.95rem;
-        }
-        
-        .table td {
-            border: none;
-            padding: 0.8rem 1rem;
-            border-bottom: 1px solid #e8f5e9;
-            font-weight: 500;
-        }
-        
-        .table tbody tr:hover {
-            background-color: #f1f8e9;
-        }
-        
-        /* Charts */
-        .chart-container {
-            background: white;
-            border-radius: 20px;
-            padding: 2rem;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-            margin-bottom: 2rem;
-            border: 1px solid #e8f5e9;
-        }
-        
-        .chart-title {
-            font-family: 'Poppins', sans-serif;
-            font-weight: 600;
-            color: #2e7d32;
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .chart-title i {
-            color: #4caf50;
-        }
-        
-        /* Responsive */
-        @media (max-width: 768px) {
-            .welcome-header h1 {
-                font-size: 1.8rem;
-            }
-            
-            .soil-card .card-value {
-                font-size: 2rem;
-            }
-            
-            .section-title {
-                font-size: 1.5rem;
-            }
-        }
-        
-        /* Loading states */
-        .loading {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(76, 175, 80, 0.3);
-            border-radius: 50%;
-            border-top-color: #4caf50;
-            animation: spin 1s ease-in-out infinite;
-        }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        
-        /* Status indicators */
-        .status-good { background: #c8e6c9; color: #2e7d32; }
-        .status-medium { background: #fff3e0; color: #ef6c00; }
-        .status-low { background: #ffebee; color: #c62828; }
+      }
+
+      .animate-slide-up {
+        animation: slideUp 0.6s ease-out forwards;
+      }
+
+      .animate-delay-1 { animation-delay: 0.1s; }
+      .animate-delay-2 { animation-delay: 0.2s; }
+      .animate-delay-3 { animation-delay: 0.3s; }
+      .animate-delay-4 { animation-delay: 0.4s; }
+
+      /* Notification Toast */
+      .toast {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: var(--surface-strong);
+        border: 1px solid var(--ink-10);
+        border-radius: var(--radius-lg);
+        padding: 16px 20px;
+        box-shadow: var(--shadow-lg);
+        backdrop-filter: blur(20px);
+        transform: translateX(100%);
+        transition: transform 300ms ease-out;
+        z-index: 50;
+        max-width: 320px;
+      }
+
+      .toast.show {
+        transform: translateX(0);
+      }
+
+      .toast-success {
+        border-left: 4px solid var(--color-success);
+      }
+
+      .toast-warning {
+        border-left: 4px solid var(--color-warning);
+      }
     </style>
-</head>
-<body>
-    <!-- Farmer-friendly Navbar -->
-    <nav class="navbar navbar-expand-lg">
-        <div class="container">
-            <a class="navbar-brand" href="#">
-                <i class="fas fa-seedling"></i>
-                KrishiShakti
-            </a>
-        </div>
-    </nav>
+  </head>
 
-    <!-- Welcome Header -->
-    <div class="welcome-header">
-        <div class="container text-center">
-            <h1><i class="fas fa-tractor"></i> Welcome to Your Farm Dashboard</h1>
-            <p>Monitor your soil health and get smart farming recommendations</p>
-        </div>
+  <body>
+    <!-- Background Shapes -->
+    <div class="bg-shapes">
+      <div class="shape shape-1"></div>
+      <div class="shape shape-2"></div>
+      <div class="shape shape-3"></div>
     </div>
 
-    <div class="container">
-        <!-- Farmer Info -->
-        {% if farmer_name and farmer_location %}
-        <div class="farmer-info">
-            <div class="farmer-details">
-                <i class="fas fa-user-tie"></i> 
-                <span class="farmer-name">{{ farmer_name }}</span>
-                <span class="mx-3">•</span>
-                <i class="fas fa-map-marker-alt"></i> 
-                <span class="farmer-location">{{ farmer_location }}</span>
-            </div>
-        </div>
-        {% endif %}
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">
+      <div id="toast-content"></div>
+    </div>
 
-        <!-- Soil Health Cards -->
-        {% if readings %}
-        <div class="row mb-4">
-            <div class="col-12 col-md-6 col-lg-3">
-                <div class="soil-card nitrogen-card">
-                    <div class="icon">
-                        <i class="fas fa-leaf"></i>
-                    </div>
-                    <h5 class="card-title">Nitrogen (N)</h5>
-                    <div class="card-value">{{ readings.0.nitrogen|floatformat:1 }}</div>
-                    <div class="card-unit">mg/kg</div>
-                    <div class="health-status status-good">Good Level</div>
-                </div>
-            </div>
-            <div class="col-12 col-md-6 col-lg-3">
-                <div class="soil-card phosphorus-card">
-                    <div class="icon">
-                        <i class="fas fa-wheat-awn"></i>
-                    </div>
-                    <h5 class="card-title">Phosphorus (P)</h5>
-                    <div class="card-value">{{ readings.0.phosphorus|floatformat:1 }}</div>
-                    <div class="card-unit">mg/kg</div>
-                    <div class="health-status status-medium">Medium Level</div>
-                </div>
-            </div>
-            <div class="col-12 col-md-6 col-lg-3">
-                <div class="soil-card potassium-card">
-                    <div class="icon">
-                        <i class="fas fa-apple-alt"></i>
-                    </div>
-                    <h5 class="card-title">Potassium (K)</h5>
-                    <div class="card-value">{{ readings.0.potassium|floatformat:1 }}</div>
-                    <div class="card-unit">mg/kg</div>
-                    <div class="health-status status-good">Good Level</div>
-                </div>
-            </div>
-            <div class="col-12 col-md-6 col-lg-3">
-                <div class="soil-card ph-card">
-                    <div class="icon">
-                        <i class="fas fa-vial"></i>
-                    </div>
-                    <h5 class="card-title">Soil pH</h5>
-                    <div class="card-value">{{ readings.0.ph|floatformat:1 }}</div>
-                    <div class="card-unit">pH level</div>
-                    <div class="health-status status-good">Balanced</div>
-                </div>
-            </div>
+    <!-- Header -->
+    <header class="navbar" role="banner">
+      <div class="container nav-inner">
+        <div class="brand" aria-label="Brand">
+          <div class="brand-mark" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M20.91 3.09C16.5 3.81 8.7 6.74 6.09 9.35c-2.61 2.61-3.7 5.48-2.9 8.16.22.74.98 1.13 1.69.87 2.15-.81 4.36-2.21 6.27-4.12 1.91-1.91 3.31-4.12 4.12-6.27.26-.71-.13-1.47-.87-1.69-.54-.16-1.12-.29-1.73-.39 2.91-.98 5.79-1.52 8.24-1.82-.3-.53-.6-1.04-.9-1.49Z"/>
+            </svg>
+          </div>
+          <span>AgriTech Dashboard</span>
         </div>
-        {% endif %}
 
-        <!-- Action Button -->
-        <div class="text-center mb-5">
-            <button id="generate-reading-btn" class="action-btn">
-                <i class="fas fa-sync-alt"></i>
-                Take New Soil Reading
+        <div class="nav-actions">
+          <button id="themeToggle" class="btn btn-ghost" type="button" aria-pressed="false" aria-label="Toggle dark mode">
+            <svg id="themeIcon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 1 0 9.79 9.79Z"/>
+            </svg>
+            Theme
+          </button>
+          <a class="btn btn-accent" href="#generate" role="button" aria-label="Generate new insights">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M12 2 9.5 9.5 2 12l7.5 2.5L12 22l2.5-7.5L22 12l-7.5-2.5L12 2Z"/>
+            </svg>
+            AI Insights
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <main class="container" role="main">
+      <!-- Hero Section -->
+      <section class="hero animate-slide-up" aria-labelledby="farmer-heading">
+        <div class="hero-card">
+          <div class="hero-row">
+            <div class="farmer">
+              <div class="farmer-avatar" aria-hidden="true">SK</div>
+              <div class="farmer-info">
+                <h1 id="farmer-heading">Welcome back, S. Kumar</h1>
+                <p>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                  </svg>
+                  Satara, Maharashtra • Field A-17
+                </p>
+              </div>
+            </div>
+            <div class="hero-actions">
+              <div class="status-indicator">
+                <div class="status-dot"></div>
+                <span>Systems Online</span>
+              </div>
+              <button class="btn btn-secondary" type="button" id="syncBtn" aria-label="Sync sensor data">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M4 7h4v2H5.91A7 7 0 0 1 19 12h2A9 9 0 0 0 4 7Zm16 10h-4v-2h2.09A7 7 0 0 1 5 12H3a9 9 0 0 0 17 5Z"/>
+                </svg>
+                Sync Data
+              </button>
+              <button class="btn" type="button" id="exportBtn" aria-label="Export data">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M12 3v10.59l3.3-3.3 1.4 1.42L12 17.41l-4.7-4.7 1.4-1.42 3.3 3.3V3h2ZM5 19h14v2H5v-2Z"/>
+                </svg>
+                Export Report
+              </button>
+            </div>
+          </div>
+          <div class="muted">Last sensor update: <span id="lastUpdated">just now</span></div>
+        </div>
+      </section>
+
+      <!-- Key Metrics -->
+      <section aria-labelledby="stats-title" class="grid grid-4">
+        <h2 id="stats-title" class="sr-only">Key soil nutrition metrics</h2>
+
+        <article class="card metric-card animate-slide-up animate-delay-1" aria-label="Nitrogen levels">
+          <div class="metric-trend">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M7 14l5-5 5 5z"/>
+            </svg>
+            +3.2%
+          </div>
+          <div class="stat">
+            <div class="icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <text x="8" y="16" font-size="8" font-weight="700" fill="currentColor">N</text>
+              </svg>
+            </div>
+            <div>
+              <div class="value" id="nitrogenVal">52</div>
+              <div class="label">Nitrogen (mg/kg)</div>
+            </div>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 78%"></div>
+          </div>
+          <div class="spacer"></div>
+          <span class="chip chip-ok">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            Optimal Range
+          </span>
+        </article>
+
+        <article class="card metric-card animate-slide-up animate-delay-2" aria-label="Phosphorus levels">
+          <div class="metric-trend">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M7 14l5-5 5 5z"/>
+            </svg>
+            +1.8%
+          </div>
+          <div class="stat">
+            <div class="icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <text x="8" y="16" font-size="8" font-weight="700" fill="currentColor">P</text>
+              </svg>
+            </div>
+            <div>
+              <div class="value" id="phosphorusVal">18</div>
+              <div class="label">Phosphorus (mg/kg)</div>
+            </div>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 65%"></div>
+          </div>
+          <div class="spacer"></div>
+          <span class="chip chip-ok">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            Good Level
+          </span>
+        </article>
+
+        <article class="card metric-card animate-slide-up animate-delay-3" aria-label="Potassium levels">
+          <div class="metric-trend">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M7 14l5-5 5 5z"/>
+            </svg>
+            +0.9%
+          </div>
+          <div class="stat">
+            <div class="icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <text x="8" y="16" font-size="8" font-weight="700" fill="currentColor">K</text>
+              </svg>
+            </div>
+            <div>
+              <div class="value" id="potassiumVal">165</div>
+              <div class="label">Potassium (mg/kg)</div>
+            </div>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 82%"></div>
+          </div>
+          <div class="spacer"></div>
+          <span class="chip chip-ok">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            Stable
+          </span>
+        </article>
+
+        <article class="card metric-card animate-slide-up animate-delay-4" aria-label="Soil pH">
+          <div class="metric-trend down">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M17 10l-5 5-5-5z"/>
+            </svg>
+            -0.3%
+          </div>
+          <div class="stat">
+            <div class="icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <text x="6" y="16" font-size="8" font-weight="700" fill="currentColor">pH</text>
+              </svg>
+            </div>
+            <div>
+              <div class="value" id="phVal">6.5</div>
+              <div class="label">Soil pH Level</div>
+            </div>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 54%"></div>
+          </div>
+          <div class="spacer"></div>
+          <span class="chip chip-warn">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 9v4m0 4h.01M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/>
+            </svg>
+            Needs Attention
+          </span>
+        </article>
+      </section>
+
+      <div class="spacer"></div>
+
+      <!-- Environmental Conditions -->
+      <section class="grid grid-2">
+        <article class="card collapsible animate-slide-up" aria-expanded="true" aria-labelledby="weather-head">
+          <div class="head" id="weather-head" role="button" tabindex="0" aria-controls="weather-content">
+            <h3>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 8px;">
+                <path d="M12 2a1 1 0 011 1v1a1 1 0 01-2 0V3a1 1 0 011-1zM4.22 4.22a1 1 0 011.41 0l.71.71a1 1 0 01-1.42 1.41l-.7-.7a1 1 0 010-1.42zM1 12a1 1 0 011-1h1a1 1 0 110 2H2a1 1 0 01-1-1zm18 0a1 1 0 011-1h1a1 1 0 110 2h-1a1 1 0 01-1-1zM17.66 6.34a1 1 0 00.7-.29l.71-.7a1 1 0 10-1.41-1.42l-.71.71a1 1 0 00.7 1.7zM12 19a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.64 17.66a1 1 0 00-.7.29l-.71.7a1 1 0 101.41 1.42l.71-.71a1 1 0 00-.7-1.7zM6.34 17.66a1 1 0 00.7.29 1 1 0 00.71-.29 1 1 0 000-1.41l-.71-.71a1 1 0 10-1.41 1.41l.7.71z"/>
+              </svg>
+              Current Weather
+            </h3>
+            <button class="btn btn-ghost" type="button" aria-label="Toggle weather section">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M7 10l5 5 5-5z"/>
+              </svg>
             </button>
-        </div>
-        <script>
-        document.getElementById('generate-reading-btn').onclick = function() {
-            fetch('/generate-reading/', {
-                method: 'POST',
-                headers: {
-                    'X-CSRFToken': '{{ csrf_token }}',
-                },
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (!data.error) {
-                    alert('New sensor reading generated!');
-                    location.reload();
-                }
-            });
-        };
-        </script>
-        <!-- Weather and Farm Recommendations -->
-        <div class="row mb-4">
-            <div class="col-md-6">
-                <div id="weather-card" class="info-card weather-card" style="display:none;">
-                    <h3>
-                        <i class="fas fa-cloud-sun"></i>
-                        Today's Weather
-                    </h3>
-                    <div id="weather-content" class="info-content"></div>
+          </div>
+          <div class="content" id="weather-content">
+            <div>
+              <p class="muted">Satara, Maharashtra • Clear skies with light breeze</p>
+              <div class="grid grid-3">
+                <div>
+                  <div class="muted">Temperature</div>
+                  <div class="value">28°C</div>
+                  <div style="font-size: 0.8rem; color: var(--ink-50);">Feels like 31°C</div>
                 </div>
-            </div>
-            <div class="col-md-6">
-                <div id="recommendation-card" class="info-card recommendation-card" style="display:none;">
-                    <h3>
-                        <i class="fas fa-lightbulb"></i>
-                        Farming Tips
-                    </h3>
-                    <div id="recommendation-content" class="info-content"></div>
+                <div>
+                  <div class="muted">Humidity</div>
+                  <div class="value">61%</div>
+                  <div style="font-size: 0.8rem; color: var(--ink-50);">Moderate</div>
                 </div>
+                <div>
+                  <div class="muted">Wind Speed</div>
+                  <div class="value">10 km/h</div>
+                  <div style="font-size: 0.8rem; color: var(--ink-50);">NE Direction</div>
+                </div>
+              </div>
+              <div class="spacer"></div>
+              <div class="chip chip-ok">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                Perfect Growing Conditions
+              </div>
             </div>
-        </div>
-            <script>
-            fetch('/api/weather/')
-                .then(response => response.json())
-                .then(data => {
-                    if (!data.error) {
-                        document.getElementById('weather-content').innerHTML =
-                            `<b>Temperature:</b> ${data.temperature}°C<br>` +
-                            `<b>Humidity:</b> ${data.humidity}%<br>` +
-                            `<b>Rainfall Probability:</b> ${data.rainfall_probability}%`;
-                        document.getElementById('weather-card').style.display = 'block';
-                    }
-                });
-            fetch('/api/recommendation/')
-                .then(response => response.json())
-                .then(data => {
-                    if (data.recommendation) {
-                        document.getElementById('recommendation-content').innerText = data.recommendation;
-                        document.getElementById('recommendation-card').style.display = 'block';
-                    }
-                });
-            </script>
-        <!-- Historical Data Section -->
-        <h2 class="section-title">
-            <i class="fas fa-history"></i>
-            Your Soil Test History
-        </h2>
-        <div class="data-table-container">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th><i class="fas fa-calendar"></i> Date & Time</th>
-                        <th><i class="fas fa-leaf"></i> Nitrogen (N)</th>
-                        <th><i class="fas fa-wheat-awn"></i> Phosphorus (P)</th>
-                        <th><i class="fas fa-apple-alt"></i> Potassium (K)</th>
-                        <th><i class="fas fa-vial"></i> Soil pH</th>
-                    </tr>
-                </thead>
-                <tbody>
-                {% for r in readings %}
-                    <tr>
-                        <td>{{ r.timestamp|date:"M d, Y - g:i A" }}</td>
-                        <td><strong>{{ r.nitrogen|floatformat:1 }}</strong> mg/kg</td>
-                        <td><strong>{{ r.phosphorus|floatformat:1 }}</strong> mg/kg</td>
-                        <td><strong>{{ r.potassium|floatformat:1 }}</strong> mg/kg</td>
-                        <td><strong>{{ r.ph|floatformat:1 }}</strong> pH</td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </div>
+          </div>
+        </article>
 
-        <!-- Chart.js CDN -->
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-        
-        <!-- Soil Trends Charts -->
-        <h2 class="section-title">
-            <i class="fas fa-chart-line"></i>
-            Soil Health Trends
-        </h2>
-        <div class="row">
-            <div class="col-lg-6 mb-4">
-                <div class="chart-container">
-                    <h4 class="chart-title">
-                        <i class="fas fa-seedling"></i>
-                        Nutrient Levels Over Time
-                    </h4>
-                    <canvas id="npkChart"></canvas>
+        <article class="card collapsible animate-slide-up animate-delay-1" aria-expanded="true" aria-labelledby="soil-head">
+          <div class="head" id="soil-head" role="button" tabindex="0" aria-controls="soil-content">
+            <h3>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 8px;">
+                <path d="M12 3c5.55 0 10 4.45 10 10s-4.45 10-10 10S2 18.55 2 13 6.45 3 12 3zm0 2c-4.42 0-8 3.58-8 8s3.58 8 8 8 8-3.58 8-8-3.58-8-8-8zm-1 4h2v6h-2V9zm0 8h2v2h-2v-2z"/>
+              </svg>
+              Soil & Irrigation
+            </h3>
+            <button class="btn btn-ghost" type="button" aria-label="Toggle soil section">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M7 10l5 5 5-5z"/>
+              </svg>
+            </button>
+          </div>
+          <div class="content" id="soil-content">
+            <div>
+              <div class="grid grid-3">
+                <div>
+                  <div class="muted">Soil Moisture</div>
+                  <div class="value" id="moistureVal">41%</div>
+                  <div class="progress-bar" style="margin-top: 4px;">
+                    <div class="progress-fill" style="width: 41%"></div>
+                  </div>
                 </div>
-            </div>
-            <div class="col-lg-6 mb-4">
-                <div class="chart-container">
-                    <h4 class="chart-title">
-                        <i class="fas fa-balance-scale"></i>
-                        Soil pH Balance
-                    </h4>
-                    <canvas id="phChart"></canvas>
+                <div>
+                  <div class="muted">Daily Irrigation</div>
+                  <div class="value">2.5 hrs</div>
+                  <div style="font-size: 0.8rem; color: var(--ink-50);">Auto-scheduled</div>
                 </div>
+                <div>
+                  <div class="muted">Rainfall (7d)</div>
+                  <div class="value">22 mm</div>
+                  <div style="font-size: 0.8rem; color: var(--ink-50);">Above average</div>
+                </div>
+              </div>
+              <div class="spacer"></div>
+              <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                <button class="btn" type="button" aria-label="Start irrigation system">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M8 5v14l8-7z"/>
+                  </svg>
+                  Start Irrigation
+                </button>
+                <button class="btn btn-secondary" type="button" aria-label="Stop irrigation system">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <rect x="6" y="6" width="12" height="12" rx="2"/>
+                  </svg>
+                  Stop
+                </button>
+                <button class="btn btn-ghost" type="button" aria-label="Schedule irrigation">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67V7z"/>
+                  </svg>
+                  Schedule
+                </button>
+              </div>
             </div>
+          </div>
+        </article>
+      </section>
+
+      <div class="spacer"></div>
+
+      <!-- Analytics Charts -->
+      <section class="grid grid-2">
+        <div class="chart animate-slide-up" role="group" aria-labelledby="chart1-title">
+          <h4 id="chart1-title">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 8px;">
+              <path d="M3 3v18h18v-2H5V3H3zm4 12h2v4H7v-4zm4-6h2v10h-2V9zm4-2h2v12h-2V7z"/>
+            </svg>
+            Nutrient Trends (N-P-K)
+          </h4>
+          <canvas id="chartNPK" aria-label="Line chart showing nitrogen, phosphorus, and potassium levels over time" role="img"></canvas>
         </div>
-    </div>
+        <div class="chart animate-slide-up animate-delay-1" role="group" aria-labelledby="chart2-title">
+          <h4 id="chart2-title">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 8px;">
+              <path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 18a8 8 0 110-16 8 8 0 010 16zm1-13h-2v6h6v-2h-4V7z"/>
+            </svg>
+            Environmental Conditions
+          </h4>
+          <canvas id="chartEnv" aria-label="Line chart showing moisture and temperature trends" role="img"></canvas>
+        </div>
+      </section>
+
+      <div class="spacer"></div>
+
+      <!-- AI-Powered Recommendations -->
+      <section class="card collapsible animate-slide-up" aria-expanded="true" aria-labelledby="reco-head">
+        <div class="head" id="reco-head" role="button" tabindex="0" aria-controls="reco-content">
+          <h3>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 8px;">
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+            </svg>
+            AI-Powered Recommendations
+          </h3>
+          <button class="btn btn-ghost" type="button" aria-label="Toggle recommendations">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M7 10l5 5 5-5z"/>
+            </svg>
+          </button>
+        </div>
+        <div class="content" id="reco-content">
+          <div>
+            <div style="display: grid; gap: 16px;">
+              <div style="display: flex; gap: 12px; align-items: flex-start; padding: 16px; background: var(--surface-glass); border-radius: var(--radius-md); border-left: 4px solid var(--color-success);">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="var(--color-success)">
+                  <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <div>
+                  <div style="font-weight: 600; margin-bottom: 4px;">Nutrient Management</div>
+                  <div>Apply 30 kg/acre urea in the next 3-5 days. Current nitrogen levels are optimal but trending upward - perfect timing for sustained growth.</div>
+                </div>
+              </div>
+              
+              <div style="display: flex; gap: 12px; align-items: flex-start; padding: 16px; background: var(--surface-glass); border-radius: var(--radius-md); border-left: 4px solid var(--color-accent);">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="var(--color-accent)">
+                  <path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 18a8 8 0 110-16 8 8 0 010 16zm1-13h-2v6h6v-2h-4V7z"/>
+                </svg>
+                <div>
+                  <div style="font-weight: 600; margin-bottom: 4px;">Irrigation Schedule</div>
+                  <div>Reduce irrigation to 1.5 hours tomorrow morning. Recent rainfall provides adequate moisture - optimize water usage.</div>
+                </div>
+              </div>
+              
+              <div style="display: flex; gap: 12px; align-items: flex-start; padding: 16px; background: var(--surface-glass); border-radius: var(--radius-md); border-left: 4px solid var(--color-warning);">
+                <svg width="20" height="20" viewBox="var(--color-warning)">
+                  <path d="M12 9v4m0 4h.01M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/>
+                </svg>
+                <div>
+                  <div style="font-weight: 600; margin-bottom: 4px;">pH Balance Alert</div>
+                  <div>Monitor pH closely - add 15 kg lime per acre if pH drops below 6.2. Current slightly acidic conditions may affect nutrient uptake.</div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="spacer"></div>
+            <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+              <button class="btn" type="button" id="implementBtn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                Implement All
+              </button>
+              <button class="btn btn-secondary" type="button" id="scheduleBtn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67V7z"/>
+                </svg>
+                Schedule Tasks
+              </button>
+              <button class="btn btn-ghost" type="button" id="refreshBtn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M4 7h4v2H5.91A7 7 0 0 1 19 12h2A9 9 0 0 0 4 7Zm16 10h-4v-2h2.09A7 7 0 0 1 5 12H3a9 9 0 0 0 17 5Z"/>
+                </svg>
+                Refresh AI Analysis
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="spacer"></div>
+
+      <!-- Historical Data Table -->
+      <section class="animate-slide-up">
+        <h3 class="section-title">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 8px;">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67V7z"/>
+          </svg>
+          Historical Readings
+        </h3>
+        <div class="table-wrap" role="region" aria-label="Historical sensor readings" tabindex="0">
+          <table>
+            <thead>
+              <tr>
+                <th>Date & Time</th>
+                <th>N (mg/kg)</th>
+                <th>P (mg/kg)</th>
+                <th>K (mg/kg)</th>
+                <th>pH Level</th>
+                <th>Moisture</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="historyBody">
+              <tr>
+                <td>
+                  <div style="font-weight: 600;">Aug 26, 2025</div>
+                  <div style="font-size: 0.85rem; color: var(--ink-60);">09:15 AM</div>
+                </td>
+                <td><strong>46</strong></td>
+                <td><strong>16</strong></td>
+                <td><strong>159</strong></td>
+                <td><strong>6.4</strong></td>
+                <td>
+                  <div>38%</div>
+                  <div style="width: 60px; height: 4px; background: var(--ink-10); border-radius: 2px; margin-top: 4px;">
+                    <div style="width: 38%; height: 100%; background: var(--color-primary); border-radius: 2px;"></div>
+                  </div>
+                </td>
+                <td>
+                  <span class="chip chip-ok">Good</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div style="font-weight: 600;">Aug 27, 2025</div>
+                  <div style="font-size: 0.85rem; color: var(--ink-60);">09:20 AM</div>
+                </td>
+                <td><strong>49</strong></td>
+                <td><strong>17</strong></td>
+                <td><strong>162</strong></td>
+                <td><strong>6.5</strong></td>
+                <td>
+                  <div>40%</div>
+                  <div style="width: 60px; height: 4px; background: var(--ink-10); border-radius: 2px; margin-top: 4px;">
+                    <div style="width: 40%; height: 100%; background: var(--color-primary); border-radius: 2px;"></div>
+                  </div>
+                </td>
+                <td>
+                  <span class="chip chip-ok">Optimal</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div style="font-weight: 600;">Aug 28, 2025</div>
+                  <div style="font-size: 0.85rem; color: var(--ink-60);">09:18 AM</div>
+                </td>
+                <td><strong>52</strong></td>
+                <td><strong>18</strong></td>
+                <td><strong>165</strong></td>
+                <td><strong>6.5</strong></td>
+                <td>
+                  <div>41%</div>
+                  <div style="width: 60px; height: 4px; background: var(--ink-10); border-radius: 2px; margin-top: 4px;">
+                    <div style="width: 41%; height: 100%; background: var(--color-primary); border-radius: 2px;"></div>
+                  </div>
+                </td>
+                <td>
+                  <span class="chip chip-ok">Excellent</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <div class="spacer"></div>
+    </main>
+
+    <footer class="container" role="contentinfo">
+      <div style="text-align: center; padding: 20px 0; border-top: 1px solid var(--ink-10);">
+        <div style="margin-bottom: 12px;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 8px; vertical-align: middle;">
+            <path d="M20.91 3.09C16.5 3.81 8.7 6.74 6.09 9.35c-2.61 2.61-3.7 5.48-2.9 8.16.22.74.98 1.13 1.69.87 2.15-.81 4.36-2.21 6.27-4.12 1.91-1.91 3.31-4.12 4.12-6.27.26-.71-.13-1.47-.87-1.69-.54-.16-1.12-.29-1.73-.39 2.91-.98 5.79-1.52 8.24-1.82-.3-.53-.6-1.04-.9-1.49Z"/>
+          </svg>
+          <strong>AgriTech Dashboard</strong>
+        </div>
+        <div>© <span id="year"></span> Smart Agriculture Solutions. Empowering farmers with AI-driven insights.</div>
+        <div style="margin-top: 8px; font-size: 0.9rem; color: var(--ink-50);">
+          Built for precision, designed for growth.
+        </div>
+      </div>
+    </footer>
+
     <script>
-    // Simple farmer-friendly chart styling
-    Chart.defaults.color = '#2e7d32';
-    Chart.defaults.font.family = 'Inter';
-    
-    // Prepare chart data for farmers
-    const timestamps = [{% for r in readings %}'{{ r.timestamp|date:"M d" }}'{% if not forloop.last %},{% endif %}{% endfor %}];
-    const nitrogen = [{% for r in readings %}{{ r.nitrogen|floatformat:1 }}{% if not forloop.last %},{% endif %}{% endfor %}];
-    const phosphorus = [{% for r in readings %}{{ r.phosphorus|floatformat:1 }}{% if not forloop.last %},{% endif %}{% endfor %}];
-    const potassium = [{% for r in readings %}{{ r.potassium|floatformat:1 }}{% if not forloop.last %},{% endif %}{% endfor %}];
-    const ph = [{% for r in readings %}{{ r.ph|floatformat:1 }}{% if not forloop.last %},{% endif %}{% endfor %}];
+      // Enhanced utilities
+      const $ = (sel, root = document) => root.querySelector(sel)
+      const $ = (sel, root = document) => Array.from(root.querySelectorAll(sel))
 
-    // Nutrient levels chart - easy to understand
-    new Chart(document.getElementById('npkChart'), {
-        type: 'line',
-        data: {
-            labels: timestamps,
-            datasets: [
-                { 
-                    label: 'Nitrogen (N)', 
-                    data: nitrogen, 
-                    borderColor: '#4caf50', 
-                    backgroundColor: 'rgba(76, 175, 80, 0.1)',
-                    borderWidth: 3,
-                    fill: true,
-                    tension: 0.3,
-                    pointBackgroundColor: '#4caf50',
-                    pointBorderColor: '#ffffff',
-                    pointBorderWidth: 2,
-                    pointRadius: 5
-                },
-                { 
-                    label: 'Phosphorus (P)', 
-                    data: phosphorus, 
-                    borderColor: '#ff9800', 
-                    backgroundColor: 'rgba(255, 152, 0, 0.1)',
-                    borderWidth: 3,
-                    fill: true,
-                    tension: 0.3,
-                    pointBackgroundColor: '#ff9800',
-                    pointBorderColor: '#ffffff',
-                    pointBorderWidth: 2,
-                    pointRadius: 5
-                },
-                { 
-                    label: 'Potassium (K)', 
-                    data: potassium, 
-                    borderColor: '#2196f3', 
-                    backgroundColor: 'rgba(33, 150, 243, 0.1)',
-                    borderWidth: 3,
-                    fill: true,
-                    tension: 0.3,
-                    pointBackgroundColor: '#2196f3',
-                    pointBorderColor: '#ffffff',
-                    pointBorderWidth: 2,
-                    pointRadius: 5
-                }
-            ]
-        },
-        options: {
-            responsive: true,
-            plugins: { 
-                legend: { 
-                    position: 'top',
-                    labels: {
-                        color: '#2e7d32',
-                        font: { weight: '600', size: 12 },
-                        usePointStyle: true,
-                        padding: 20
-                    }
-                }
-            },
-            scales: { 
-                x: { 
-                    title: { display: true, text: 'Date', color: '#2e7d32', font: { weight: '600' } },
-                    ticks: { color: '#2e7d32', font: { weight: '500' } },
-                    grid: { color: 'rgba(46, 125, 50, 0.1)' }
-                }, 
-                y: { 
-                    title: { display: true, text: 'Level (mg/kg)', color: '#2e7d32', font: { weight: '600' } },
-                    ticks: { color: '#2e7d32', font: { weight: '500' } },
-                    grid: { color: 'rgba(46, 125, 50, 0.1)' }
-                }
-            }
-        }
-    });
+      // Toast notification system
+      function showToast(message, type = 'success') {
+        const toast = $('#toast')
+        const content = $('#toast-content')
+        
+        content.textContent = message
+        toast.className = `toast toast-${type} show`
+        
+        setTimeout(() => {
+          toast.classList.remove('show')
+        }, 4000)
+      }
 
-    // Soil pH chart - shows if soil is acidic or alkaline
-    new Chart(document.getElementById('phChart'), {
-        type: 'line',
-        data: {
-            labels: timestamps,
-            datasets: [
-                { 
-                    label: 'Soil pH Level', 
-                    data: ph, 
-                    borderColor: '#9c27b0', 
-                    backgroundColor: 'rgba(156, 39, 176, 0.1)',
-                    borderWidth: 4,
-                    fill: true,
-                    tension: 0.3,
-                    pointBackgroundColor: '#9c27b0',
-                    pointBorderColor: '#ffffff',
-                    pointBorderWidth: 2,
-                    pointRadius: 6
-                }
-            ]
-        },
-        options: {
-            responsive: true,
-            plugins: { 
-                legend: { 
-                    position: 'top',
-                    labels: {
-                        color: '#2e7d32',
-                        font: { weight: '600', size: 12 },
-                        usePointStyle: true,
-                        padding: 20
-                    }
-                }
-            },
-            scales: { 
-                x: { 
-                    title: { display: true, text: 'Date', color: '#2e7d32', font: { weight: '600' } },
-                    ticks: { color: '#2e7d32', font: { weight: '500' } },
-                    grid: { color: 'rgba(156, 39, 176, 0.1)' }
-                }, 
-                y: { 
-                    title: { display: true, text: 'pH Value (Acidic ← 7 → Alkaline)', color: '#2e7d32', font: { weight: '600' } }, 
-                    min: 4, 
-                    max: 9,
-                    ticks: { 
-                        color: '#2e7d32', 
-                        font: { weight: '500' },
-                        callback: function(value) {
-                            if (value < 6.5) return value + ' (Acidic)';
-                            if (value > 7.5) return value + ' (Alkaline)';
-                            return value + ' (Neutral)';
-                        }
-                    },
-                    grid: { color: 'rgba(156, 39, 176, 0.1)' }
-                }
+      // Enhanced theme toggle with smooth transitions
+      const themeBtn = $('#themeToggle')
+      const themeIcon = $('#themeIcon')
+      const html = document.documentElement
+
+      // Check for saved theme preference
+      const savedTheme = localStorage.getItem('theme')
+      if (savedTheme) {
+        html.classList.add(`theme-${savedTheme}`)
+        themeBtn.setAttribute('aria-pressed', String(savedTheme === 'dark'))
+        updateThemeIcon(savedTheme === 'dark')
+      }
+
+      function updateThemeIcon(isDark) {
+        themeIcon.innerHTML = isDark
+          ? '<path d="M6.76 4.84 5.34 3.42 3.92 4.84l1.42 1.42 1.42-1.42ZM1 13h3v-2H1v2Zm10 10h2v-3h-2v3Zm8.66-18.16 1.42-1.42-1.42-1.42-1.42 1.42 1.42 1.42ZM18 13h3v-2h-3v2ZM6.76 19.16l-1.42 1.42 1.42 1.42 1.42-1.42-1.42-1.42ZM11 5a7 7 0 1 0 0 14 7 7 0 0 0 0-14Z"/>'
+          : '<path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 1 0 9.79 9.79Z"/>'
+      }
+
+      themeBtn?.addEventListener('click', () => {
+        const isDark = html.classList.toggle('theme-dark')
+        html.classList.remove(isDark ? 'theme-light' : 'theme-dark')
+        
+        themeBtn.setAttribute('aria-pressed', String(isDark))
+        localStorage.setItem('theme', isDark ? 'dark' : 'light')
+        updateThemeIcon(isDark)
+        
+        showToast(`Switched to ${isDark ? 'dark' : 'light'} theme`, 'success')
+      })
+
+      // Enhanced collapsibles with smooth animations
+      $('.collapsible').forEach(section => {
+        const head = section.querySelector('.head')
+        const toggleBtn = head?.querySelector('button')
+        
+        const toggle = () => {
+          const expanded = section.getAttribute('aria-expanded') === 'true'
+          section.setAttribute('aria-expanded', String(!expanded))
+          
+          if (toggleBtn) {
+            const icon = toggleBtn.querySelector('svg path')
+            if (icon) {
+              icon.setAttribute('d', expanded ? 'M7 10l5 5 5-5z' : 'M17 10l-5-5-5 5z')
             }
+          }
         }
-    });
+
+        head?.addEventListener('click', toggle)
+        head?.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault()
+            toggle()
+          }
+        })
+      })
+
+      // Enhanced chart rendering with better styling
+      function drawLineChart(canvas, series, options = {}) {
+        const ctx = canvas.getContext('2d')
+        const dpr = window.devicePixelRatio || 1
+        const rect = canvas.getBoundingClientRect()
+        canvas.width = rect.width * dpr
+        canvas.height = rect.height * dpr
+        ctx.scale(dpr, dpr)
+
+        const w = rect.width
+        const h = rect.height
+        const padding = 40
+        const innerW = w - padding * 2
+        const innerH = h - padding * 2
+
+        // Clear canvas
+        ctx.clearRect(0, 0, w, h)
+
+        // Compute global min/max
+        let min = Infinity, max = -Infinity
+        series.forEach(s => s.data.forEach(v => { 
+          if (v < min) min = v
+          if (v > max) max = v 
+        }))
+        if (min === max) { min -= 1; max += 1 }
+
+        // Add padding to range
+        const range = max - min
+        min -= range * 0.1
+        max += range * 0.1
+
+        // Grid lines
+        ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--ink-5').trim()
+        ctx.lineWidth = 1
+        
+        // Horizontal grid lines
+        for (let i = 0; i <= 4; i++) {
+          const y = padding + (innerH / 4) * i
+          ctx.beginPath()
+          ctx.moveTo(padding, y)
+          ctx.lineTo(w - padding, y)
+          ctx.stroke()
+        }
+
+        // Vertical grid lines
+        const maxDataPoints = Math.max(...series.map(s => s.data.length))
+        for (let i = 0; i < maxDataPoints; i++) {
+          const x = padding + (innerW / (maxDataPoints - 1)) * i
+          ctx.beginPath()
+          ctx.moveTo(x, padding)
+          ctx.lineTo(x, h - padding)
+          ctx.stroke()
+        }
+
+        // Axes
+        ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--ink-20').trim()
+        ctx.lineWidth = 2
+        ctx.beginPath()
+        ctx.moveTo(padding, h - padding)
+        ctx.lineTo(w - padding, h - padding)
+        ctx.moveTo(padding, padding)
+        ctx.lineTo(padding, h - padding)
+        ctx.stroke()
+
+        // Helper
+        const xStep = innerW / (maxDataPoints - 1 || 1)
+        const yScale = innerH / (max - min)
+
+        // Draw lines
+        series.forEach(s => {
+          // Line
+          ctx.beginPath()
+          ctx.lineWidth = 3
+          ctx.strokeStyle = s.color
+          ctx.lineCap = 'round'
+          ctx.lineJoin = 'round'
+          
+          s.data.forEach((val, i) => {
+            const x = padding + i * xStep
+            const y = h - padding - (val - min) * yScale
+            if (i === 0) ctx.moveTo(x, y)
+            else ctx.lineTo(x, y)
+          })
+          ctx.stroke()
+
+          // Points
+          ctx.fillStyle = s.color
+          s.data.forEach((val, i) => {
+            const x = padding + i * xStep
+            const y = h - padding - (val - min) * yScale
+            ctx.beginPath()
+            ctx.arc(x, y, 4, 0, Math.PI * 2)
+            ctx.fill()
+            
+            // Point highlight
+            ctx.beginPath()
+            ctx.arc(x, y, 6, 0, Math.PI * 2)
+            ctx.strokeStyle = s.color
+            ctx.lineWidth = 2
+            ctx.stroke()
+          })
+        })
+
+        // Labels
+        ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--ink-60').trim()
+        ctx.font = '12px Inter, system-ui, sans-serif'
+        ctx.textAlign = 'center'
+        
+        // X-axis labels (dates)
+        const dates = ['Aug 23', 'Aug 24', 'Aug 25', 'Aug 26', 'Aug 27', 'Aug 28', 'Today']
+        dates.forEach((date, i) => {
+          if (i < maxDataPoints) {
+            const x = padding + i * xStep
+            ctx.fillText(date, x, h - 8)
+          }
+        })
+      }
+
+      // Sample data with realistic trends
+      const dataN = [42, 44, 46, 49, 52, 50, 51]
+      const dataP = [14, 15, 16, 17, 18, 19, 18]
+      const dataK = [150, 153, 159, 162, 165, 168, 166]
+      const dataMoist = [36, 37, 38, 40, 41, 42, 41]
+      const dataTemp = [26, 27, 27, 28, 28, 29, 28]
+
+      function renderCharts() {
+        const npk = document.getElementById('chartNPK')
+        const env = document.getElementById('chartEnv')
+        
+        if (npk) {
+          drawLineChart(npk, [
+            { label: 'Nitrogen', color: '#059669', data: dataN },
+            { label: 'Phosphorus', color: '#3b82f6', data: dataP },
+            { label: 'Potassium', color: '#64748b', data: dataK }
+          ])
+        }
+        
+        if (env) {
+          drawLineChart(env, [
+            { label: 'Moisture %', color: '#10b981', data: dataMoist },
+            { label: 'Temperature °C', color: '#f59e0b', data: dataTemp }
+          ])
+        }
+      }
+
+      // Real-time data simulation
+      function updateMetrics() {
+        const metrics = {
+          nitrogen: Math.floor(Math.random() * 5) + 50,
+          phosphorus: Math.floor(Math.random() * 3) + 17,
+          potassium: Math.floor(Math.random() * 10) + 160,
+          ph: (Math.random() * 0.4 + 6.3).toFixed(1),
+          moisture: Math.floor(Math.random() * 5) + 39
+        }
+
+        $('#nitrogenVal').textContent = metrics.nitrogen
+        $('#phosphorusVal').textContent = metrics.phosphorus
+        $('#potassiumVal').textContent = metrics.potassium
+        $('#phVal').textContent = metrics.ph
+        $('#moistureVal').textContent = metrics.moisture + '%'
+      }
+
+      // Enhanced event listeners
+      $('#exportBtn')?.addEventListener('click', () => {
+        const btn = $('#exportBtn')
+        btn.classList.add('loading')
+        btn.disabled = true
+        
+        setTimeout(() => {
+          btn.classList.remove('loading')
+          btn.disabled = false
+          showToast('Data exported successfully! Check your downloads.', 'success')
+        }, 2000)
+      })
+
+      $('#syncBtn')?.addEventListener('click', () => {
+        const btn = $('#syncBtn')
+        btn.classList.add('loading')
+        btn.disabled = true
+        
+        setTimeout(() => {
+          const ts = new Date().toLocaleString()
+          $('#lastUpdated').textContent = ts
+          updateMetrics()
+          renderCharts()
+          btn.classList.remove('loading')
+          btn.disabled = false
+          showToast('Sensors synchronized successfully!', 'success')
+        }, 1500)
+      })
+
+      $('#implementBtn')?.addEventListener('click', () => {
+        showToast('Implementing all recommendations...', 'success')
+      })
+
+      $('#scheduleBtn')?.addEventListener('click', () => {
+        showToast('Tasks scheduled successfully!', 'success')
+      })
+
+      $('#refreshBtn')?.addEventListener('click', () => {
+        showToast('AI analysis refreshed with latest data.', 'success')
+      })
+
+      // Initialize on load
+      window.addEventListener('load', () => {
+        // Add staggered animations to cards
+        $('.animate-slide-up').forEach((el, i) => {
+          el.style.opacity = '0'
+          el.style.transform = 'translateY(30px)'
+          
+          setTimeout(() => {
+            el.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)'
+            el.style.opacity = '1'
+            el.style.transform = 'translateY(0)'
+          }, i * 100)
+        })
+
+        renderCharts()
+        $('#year').textContent = new Date().getFullYear()
+        
+        const now = new Date()
+        $('#lastUpdated').textContent = now.toLocaleString('en-IN', {
+          timeZone: 'Asia/Kolkata',
+          dateStyle: 'medium',
+          timeStyle: 'short'
+        })
+
+        // Auto-refresh data every 30 seconds
+        setInterval(() => {
+          updateMetrics()
+          renderCharts()
+        }, 30000)
+      })
+
+      window.addEventListener('resize', renderCharts)
+
+      // Keyboard navigation improvements
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Tab') {
+          document.body.classList.add('using-keyboard')
+        }
+      })
+
+      document.addEventListener('mousedown', () => {
+        document.body.classList.remove('using-keyboard')
+      })
+
+      // Service worker for offline functionality (placeholder)
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          // navigator.serviceWorker.register('/sw.js') // Uncomment when implementing
+        })
+      }
     </script>
-
-</body>
-</html>
-
-
-</body>
+  </body>
 </html>
