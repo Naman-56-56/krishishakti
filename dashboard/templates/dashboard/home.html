@@ -940,7 +940,7 @@
               </svg>
             </div>
             <div>
-              <div class="value" id="nitrogenVal">52</div>
+              <div class="value" id="nitrogenVal">{{ readings.0.nitrogen|floatformat:2 }}</div>
               <div class="label">Nitrogen (mg/kg)</div>
             </div>
           </div>
@@ -971,7 +971,7 @@
               </svg>
             </div>
             <div>
-              <div class="value" id="phosphorusVal">18</div>
+              <div class="value" id="phosphorusVal">{{ readings.0.phosphorus|floatformat:2 }}</div>
               <div class="label">Phosphorus (mg/kg)</div>
             </div>
           </div>
@@ -1002,7 +1002,7 @@
               </svg>
             </div>
             <div>
-              <div class="value" id="potassiumVal">165</div>
+              <div class="value" id="potassiumVal">{{ readings.0.potassium|floatformat:2 }}</div>
               <div class="label">Potassium (mg/kg)</div>
             </div>
           </div>
@@ -1033,7 +1033,7 @@
               </svg>
             </div>
             <div>
-              <div class="value" id="phVal">6.5</div>
+              <div class="value" id="phVal">{{ readings.0.ph|floatformat:2 }}</div>
               <div class="label">Soil pH Level</div>
             </div>
           </div>
@@ -1284,63 +1284,27 @@
               </tr>
             </thead>
             <tbody id="historyBody">
+              {% for r in readings %}
               <tr>
                 <td>
-                  <div style="font-weight: 600;">Aug 26, 2025</div>
-                  <div style="font-size: 0.85rem; color: var(--ink-60);">09:15 AM</div>
+                  <div style="font-weight: 600;">{{ r.timestamp|date:"M d, Y" }}</div>
+                  <div style="font-size: 0.85rem; color: var(--ink-60);">{{ r.timestamp|date:"H:i A" }}</div>
                 </td>
-                <td><strong>46</strong></td>
-                <td><strong>16</strong></td>
-                <td><strong>159</strong></td>
-                <td><strong>6.4</strong></td>
+                <td><strong>{{ r.nitrogen|floatformat:2 }}</strong></td>
+                <td><strong>{{ r.phosphorus|floatformat:2 }}</strong></td>
+                <td><strong>{{ r.potassium|floatformat:2 }}</strong></td>
+                <td><strong>{{ r.ph|floatformat:2 }}</strong></td>
                 <td>
-                  <div>38%</div>
+                  <div>-</div>
                   <div style="width: 60px; height: 4px; background: var(--ink-10); border-radius: 2px; margin-top: 4px;">
-                    <div style="width: 38%; height: 100%; background: var(--color-primary); border-radius: 2px;"></div>
+                    <div style="width: 0%; height: 100%; background: var(--color-primary); border-radius: 2px;"></div>
                   </div>
                 </td>
                 <td>
-                  <span class="chip chip-ok">Good</span>
+                  <span class="chip chip-ok">-</span>
                 </td>
               </tr>
-              <tr>
-                <td>
-                  <div style="font-weight: 600;">Aug 27, 2025</div>
-                  <div style="font-size: 0.85rem; color: var(--ink-60);">09:20 AM</div>
-                </td>
-                <td><strong>49</strong></td>
-                <td><strong>17</strong></td>
-                <td><strong>162</strong></td>
-                <td><strong>6.5</strong></td>
-                <td>
-                  <div>40%</div>
-                  <div style="width: 60px; height: 4px; background: var(--ink-10); border-radius: 2px; margin-top: 4px;">
-                    <div style="width: 40%; height: 100%; background: var(--color-primary); border-radius: 2px;"></div>
-                  </div>
-                </td>
-                <td>
-                  <span class="chip chip-ok">Optimal</span>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <div style="font-weight: 600;">Aug 28, 2025</div>
-                  <div style="font-size: 0.85rem; color: var(--ink-60);">09:18 AM</div>
-                </td>
-                <td><strong>52</strong></td>
-                <td><strong>18</strong></td>
-                <td><strong>165</strong></td>
-                <td><strong>6.5</strong></td>
-                <td>
-                  <div>41%</div>
-                  <div style="width: 60px; height: 4px; background: var(--ink-10); border-radius: 2px; margin-top: 4px;">
-                    <div style="width: 41%; height: 100%; background: var(--color-primary); border-radius: 2px;"></div>
-                  </div>
-                </td>
-                <td>
-                  <span class="chip chip-ok">Excellent</span>
-                </td>
-              </tr>
+              {% endfor %}
             </tbody>
           </table>
         </div>
@@ -1547,7 +1511,7 @@
         ctx.textAlign = 'center'
         
         // X-axis labels (dates)
-        const dates = ['Aug 23', 'Aug 24', 'Aug 25', 'Aug 26', 'Aug 27', 'Aug 28', 'Today']
+  const dates = [{% for r in readings %}'{{ r.timestamp|date:"M d" }}',{% endfor %}]
         dates.forEach((date, i) => {
           if (i < maxDataPoints) {
             const x = padding + i * xStep
@@ -1557,9 +1521,9 @@
       }
 
       // Sample data with realistic trends
-      const dataN = [42, 44, 46, 49, 52, 50, 51]
-      const dataP = [14, 15, 16, 17, 18, 19, 18]
-      const dataK = [150, 153, 159, 162, 165, 168, 166]
+  const dataN = [{% for r in readings %}{{ r.nitrogen|floatformat:2 }},{% endfor %}];
+  const dataP = [{% for r in readings %}{{ r.phosphorus|floatformat:2 }},{% endfor %}];
+  const dataK = [{% for r in readings %}{{ r.potassium|floatformat:2 }},{% endfor %}];
       const dataMoist = [36, 37, 38, 40, 41, 42, 41]
       const dataTemp = [26, 27, 27, 28, 28, 29, 28]
 

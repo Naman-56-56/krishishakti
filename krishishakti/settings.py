@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-zyli=$16b-k@lcm80-vi^g3l+lt2djir55xtzufickbv!#zksr
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'recommendations',
     'weather',
     'farmers',
+    'simulator',
     'rest_framework',
 ]
 
